@@ -11,10 +11,11 @@ def build_dimension(dim):
 
 class DimensionSpec(object):
     def __init__(
-        self, dimension, output_name, extraction_function=None, filter_spec=None
+        self, dimension, output_name, output_type=None, extraction_function=None, filter_spec=None
     ):
         self._dimension = dimension
         self._output_name = output_name
+        self._output_type = output_type
         self._extraction_function = extraction_function
         self._filter_spec = filter_spec
 
@@ -24,6 +25,9 @@ class DimensionSpec(object):
             "dimension": self._dimension,
             "outputName": self._output_name,
         }
+
+        if self._output_type is not None:
+            dimension_spec["outputType"] = self._output_type
 
         if self._extraction_function is not None:
             dimension_spec["type"] = "extraction"
