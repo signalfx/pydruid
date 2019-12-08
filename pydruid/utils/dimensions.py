@@ -1,3 +1,7 @@
+
+from .granularity import build_granularity
+
+
 def build_dimension(dim):
     if isinstance(dim, DimensionSpec):
         dim = dim.build()
@@ -123,11 +127,13 @@ class TimeFormatExtraction(ExtractionFunction):
 
     extraction_type = "timeFormat"
 
-    def __init__(self, format, locale=None, time_zone=None):
+    def __init__(self, format, locale=None, time_zone=None, granularity=None, as_millis=None):
         super(TimeFormatExtraction, self).__init__()
         self._format = format
         self._locale = locale
         self._time_zone = time_zone
+        self._granularity = granularity
+        self._as_millis = as_millis
 
     def build(self):
         extractor = super(TimeFormatExtraction, self).build()
@@ -136,6 +142,10 @@ class TimeFormatExtraction(ExtractionFunction):
             extractor["locale"] = self._locale
         if self._time_zone:
             extractor["timeZone"] = self._time_zone
+        if self._granularity:
+            extractor["granularity"] = build_granularity(self._granularity)
+        if self._as_millis:
+            extractor["asMillis"] = self._as_millis
 
         return extractor
 
